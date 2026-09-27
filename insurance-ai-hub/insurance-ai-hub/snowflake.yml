@@ -1,0 +1,24 @@
+definition_version: 2
+entities:
+  streamlit_app:
+    type: streamlit
+    main_file: streamlit_app.py
+    artifacts:
+      - pyproject.toml
+      - streamlit_app.py
+      - config.py
+      - utils.py
+      - pages/
+      - .streamlit/config.toml
+    identifier:
+      database: INSURANCE_AI_HUB
+      schema: ANALYTICS
+      name: INSURANCE_AI_HUB
+    title: Unified Intelligence Hub
+    query_warehouse: COMPUTE_WH
+    compute_pool: SYSTEM_COMPUTE_POOL_CPU
+    run_mode: SpcsOnly
+    execute_as: OWNER
+    sharing:
+      - role: ACCOUNTADMIN
+        with_grant_option: true

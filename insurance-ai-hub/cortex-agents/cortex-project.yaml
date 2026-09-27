@@ -1,0 +1,17 @@
+version: 1
+artifacts:
+  - path: PRODUCT_MATCHING_AGENT.agent.yaml
+    type: cortex_agent
+    targets:
+      default:
+        object: INSURANCE_AI_HUB.ANALYTICS.PRODUCT_MATCHING_AGENT
+  - path: PRICE_OPTIMIZATION_AGENT.agent.yaml
+    type: cortex_agent
+    targets:
+      default:
+        object: INSURANCE_AI_HUB.ANALYTICS.PRICE_OPTIMIZATION_AGENT
+  - path: MARKET_INTELLIGENCE_AGENT.agent.yaml
+    type: cortex_agent
+    targets:
+      default:
+        object: INSURANCE_AI_HUB.ANALYTICS.MARKET_INTELLIGENCE_AGENT

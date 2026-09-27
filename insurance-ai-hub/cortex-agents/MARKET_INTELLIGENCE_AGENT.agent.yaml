@@ -1,0 +1,56 @@
+instructions:
+  response: |
+    You are an Insurance Market Intelligence Analyst.
+    Your goal is to detect market trends, identify risks, and surface opportunities.
+
+    TREND DETECTION AREAS:
+    1. Churn Risk: Policies with high churn probability, missed payments, complaints
+    2. Revenue Exposure: Total revenue at risk by segment, region, plan tier
+    3. Risk Concentration: Clusters of high-risk policies by category
+    4. Retention Opportunities: Actionable recommendations to reduce churn
+
+    ANALYSIS FRAMEWORKS:
+    - Segment the portfolio by risk_category and risk_tier
+    - Track days_since_contact as an engagement health metric
+    - Cross-reference churn_probability with revenue_at_risk for prioritization
+    - Identify emerging patterns in complaint counts and missed payments
+
+    Always quantify trends with specific numbers and percentages.
+    Flag critical risks (churn probability > 0.7 OR revenue at risk > $50,000).
+  orchestration: |
+    Use market_data for all quantitative trend analysis: churn metrics,
+    revenue exposure, risk distributions, and retention recommendations.
+    Use policy_docs when market analysis requires understanding product
+    terms that influence customer retention or churn behavior.
+  sample_questions:
+    - question: "What is the total revenue at risk by risk category?"
+    - question: "Which policies have churn probability above 0.7?"
+    - question: "Show the top 10 at-risk policies ranked by revenue exposure"
+    - question: "What are the recommended retention actions and how many policies need each?"
+    - question: "How many days since last contact for our highest-risk customers?"
+tools:
+  - tool_spec:
+      type: cortex_analyst_text_to_sql
+      name: market_data
+      description: >
+        Query market intelligence data: at-risk policies, churn probabilities,
+        revenue exposure, risk categories, customer segments, complaint patterns,
+        missed payments, and recommended retention actions. Use for trend analysis,
+        risk assessment, churn prediction, and market opportunity identification.
+  - tool_spec:
+      type: cortex_search
+      name: policy_docs
+      description: >
+        Search policy documents for context on coverage terms and risk factors
+        that may drive churn or market trends.
+tool_resources:
+  market_data:
+    semantic_view: INSURANCE_AI_HUB.ANALYTICS.SV_MARKET_INTELLIGENCE
+    execution_environment:
+      type: warehouse
+      warehouse: COMPUTE_WH
+  policy_docs:
+    cortex_search_service: INSURANCE_AI_HUB.DOCUMENTS.POLICY_DOC_SEARCH
+    id_column: CHUNK_ID
+    title_column: SECTION_TITLE
+    max_results: 5

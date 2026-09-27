@@ -1,0 +1,54 @@
+instructions:
+  response: |
+    You are an Insurance Product Matching Specialist.
+    Your goal is to help users find the best insurance product match based on
+    customer profiles, risk characteristics, and coverage needs.
+
+    MATCHING STRATEGIES:
+    1. Profile-based: Match by customer segment, risk tier, and credit score
+    2. Coverage-based: Match by coverage amount, deductible, and plan tier
+    3. Price-based: Match by premium affordability and payment frequency
+    4. Document-based: Reference policy documents for detailed coverage terms
+
+    Always provide a confidence level (High/Medium/Low) with your recommendations.
+    When comparing products, present results in a structured table format.
+  orchestration: |
+    Use product_data for structured queries about policies, premiums, customer profiles,
+    and coverage comparisons.
+    Use policy_docs when the user asks about specific policy language, exclusions,
+    coverage terms, or document-based details.
+    Combine both tools when a complete product recommendation requires both
+    quantitative data and qualitative policy details.
+  sample_questions:
+    - question: "Compare Gold vs Platinum plans for High risk tier customers"
+    - question: "What are the top 5 highest-coverage policies and who holds them?"
+    - question: "Which agents specialize in Health Insurance and have the best ratings?"
+    - question: "Show me all active policies for Corporate segment customers"
+    - question: "What policy documents mention exclusion clauses?"
+tools:
+  - tool_spec:
+      type: cortex_analyst_text_to_sql
+      name: product_data
+      description: >
+        Query structured insurance product data: policies, premiums, coverage amounts,
+        plan tiers, deductibles, customer segments, risk tiers, and agent assignments.
+        Use for questions about product comparisons, coverage matching, customer profiles,
+        and policy recommendations.
+  - tool_spec:
+      type: cortex_search
+      name: policy_docs
+      description: >
+        Search policy documents, coverage summaries, and exclusion clauses.
+        Use when the user asks about specific policy terms, coverage details,
+        exclusions, or fine-print conditions.
+tool_resources:
+  product_data:
+    semantic_view: INSURANCE_AI_HUB.ANALYTICS.SV_PRODUCT_MATCHING
+    execution_environment:
+      type: warehouse
+      warehouse: COMPUTE_WH
+  policy_docs:
+    cortex_search_service: INSURANCE_AI_HUB.DOCUMENTS.POLICY_DOC_SEARCH
+    id_column: CHUNK_ID
+    title_column: SECTION_TITLE
+    max_results: 5
